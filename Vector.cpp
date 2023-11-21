@@ -12,7 +12,7 @@ class MyVector
 		T* tmp = new T [v_capacity];
 		for (int i = 0; i < v_size; ++i){
 			
-			tmp [i] == v_ptr[i];
+			tmp [i] = v_ptr[i];
 		}	
 		delete [] v_ptr;
 		v_ptr = tmp;
@@ -36,20 +36,7 @@ class MyVector
 		}
 		v_size = 0;
 		v_capacity = 0;
-	}
-
-	/*void reallocator (int x = 0){
-			
-		x == 0 ? v_capacity *= 2 : v_capacity = x;
-		T* tmp = new T [v_capacity];
-		for (int i = 0; i < v_size; ++i){
-			
-			tmp [i] == v_ptr[i];
-		}	
-		delete [] v_ptr;
-		v_ptr = tmp;
-		tmp = nullptr;
-	}*/
+	}	
 
 	int size ();
 	size_t max_size ();
@@ -58,9 +45,32 @@ class MyVector
 	bool empty ();
 	void reserv (int);
 	void shrink_to_fit();
+	void push_back();
+
+	
+	  std::ostream& operator << (std::ostream& os)
+	{
+		for (int i = 0; i < v_size; ++i){
+			
+			os << v_ptr[i] << " ";
+		}
+
+		return os;
+		
+	}
+	
 
 	
 };
+
+template <typename T>
+std::ostream& operator << (std::ostream& os, MyVector<T>& vec){
+
+	return vec.operator<<(os);
+
+}
+
+
 int main ()
 {
 	MyVector<int> my_vec;
@@ -75,7 +85,14 @@ int main ()
         std::cout << " after reserv capacity () :: " << my_vec.capacity () << std::endl;	
 	my_vec.shrink_to_fit();
 	std::cout << " after shrink to fit capacity is :: " << my_vec.capacity() << std::endl;
+	std::cout << my_vec ;
 
+}
+template <typename T>
+MyVector::MyVector<T>(const Vector& obj)
+{
+	
+	
 }
 
 template <typename T>
@@ -102,18 +119,6 @@ void MyVector<T>::resize (int new_size)
 	if (new_size > v_capacity){
 		
 		MyVector<T>::reallocator(new_size);
-		/*
-		 * v_capacity = new_size;
-		T* tmp = new T [v_capacity];
-		for (int i = 0; i < v_size; ++i){
-			
-			tmp[i] = v_ptr[i];
-			
-		}
-		delete [] v_ptr;
-		v_ptr = tmp;
-		tmp = nullptr; 
-		*/
 
 	}
        
@@ -125,7 +130,8 @@ void MyVector<T>::resize (int new_size)
 		
 		for (int i = v_size; i < new_size; ++i){
 			
-			v_ptr[v_size++] = 0;
+			v_ptr[i] = 0;
+			++v_size;
 		}
 	}
 }
@@ -159,3 +165,5 @@ void MyVector<T>::shrink_to_fit()
 		MyVector<T>::reallocator(v_size);
 	}
 }
+
+
