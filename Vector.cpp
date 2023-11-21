@@ -38,6 +38,9 @@ class MyVector
 		v_capacity = 0;
 	}
 
+	}	
+
+
 	int size ();
 	size_t max_size ();
 	void resize (int);
@@ -50,8 +53,32 @@ class MyVector
 	T& back ();
 	T* data ();
 	void assign (int,const T&);
+
+	
+	  std::ostream& operator << (std::ostream& os)
+	{
+		for (int i = 0; i < v_size; ++i){
+			
+			os << v_ptr[i] << " ";
+		}
+
+		return os;
+		
+	}
+	
+
+
 	
 };
+
+template <typename T>
+std::ostream& operator << (std::ostream& os, MyVector<T>& vec){
+
+	return vec.operator<<(os);
+
+}
+
+
 int main ()
 {
 	MyVector<int> my_vec;
@@ -82,6 +109,15 @@ int main ()
 	}
 	std::cout << std::endl;
 
+	std::cout << my_vec ;
+
+
+}
+template <typename T>
+MyVector::MyVector<T>(const Vector& obj)
+{
+	
+	
 }
 
 template <typename T>
@@ -155,6 +191,7 @@ void MyVector<T>::shrink_to_fit()
 	}
 }
 
+
 template <typename T>
 T& MyVector<T>::at (int n)
 {
@@ -222,3 +259,6 @@ void MyVector<T>::assign (int count,const T& value)
 	v_ptr = tmp;
 	tmp = nullptr;
 }
+
+
+
