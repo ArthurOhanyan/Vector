@@ -33,7 +33,7 @@ class MyVector
 	public:
 	MyVector ();
 	MyVector (int,int);
-	//MyVector (initialization_list<int>);
+	MyVector (std::initializer_list<int>);
 	MyVector (const MyVector&);
 	MyVector (MyVector&&);
 	
@@ -134,6 +134,63 @@ class MyVector
 	  }
 };
 
+template <>
+class MyVector<bool>
+{
+	size_t* v_ptr;
+	int v_size;
+	int v_capacity;
+
+	void reallocator (int x = 0){
+			
+		if (v_capacity == 0){
+			
+			v_capacity = 10;
+
+		} else if (x == 0){
+			
+			v_capacity *= 2;
+		} else {
+			
+			v_capacity = x + 5;
+		}
+		size_t tmp = new T [v_capacity];
+		for (int i = 0; i < v_size; ++i){
+			
+			tmp [i] = v_ptr[i];
+		}	
+		delete [] v_ptr;
+		v_ptr = tmp;
+		tmp = nullptr;
+	}
+
+	MyVector<bool>();
+	
+	~MyVector<bool>();
+
+
+};
+
+
+MyVector<bool>::MyVector()
+{
+	v_ptr = nullptr;
+	v_size = 0;
+	v_capacity = 0;
+}
+
+MyVector<bool>::~MyVector()
+{
+	if (v_ptr){
+		
+		delete [] v_ptr;
+	}
+	v_size = 0;
+	v_capacity = 0;
+}
+
+
+
 template <typename T>
 std::ostream& operator << (std::ostream& os, MyVector<T>& vec){
 
@@ -159,6 +216,13 @@ MyVector<T>::MyVector(int x, int y)
 		
 		v_ptr[v_size++] = y;
 	}
+	
+}
+
+template <typename T>
+MyVector<T>::MyVector(std::initializer_list<int> list)
+{
+	
 	
 }
 
