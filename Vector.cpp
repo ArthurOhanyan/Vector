@@ -38,7 +38,7 @@ class MyVector
 		v_capacity = 0;
 	}
 
-	}	
+		
 
 
 	int size ();
@@ -101,24 +101,16 @@ int main ()
 		my_vec.at(i) = i;
 		std::cout << " " << *(my_vec.data() + i) ;
 	}
+
 	std::cout << std::endl;
+	std::cout << " initilized with function at (), and print with function data () " << std::endl;
 	my_vec.assign (10,9);
-	for (int i = 0; i < my_vec.size(); ++i){
-		
-		std::cout << " " << my_vec.at(i);
-	}
+	std::cout << " after call my_vec.assign (10,9) :: "  << my_vec;
+	std::cout << "\n size is :: " << my_vec.size() << " :: capacity is :: " << my_vec.capacity() << std::endl;
 	std::cout << std::endl;
 
-	std::cout << my_vec ;
-
-
 }
-template <typename T>
-MyVector::MyVector<T>(const Vector& obj)
-{
-	
-	
-}
+
 
 template <typename T>
 int MyVector<T>::size()
