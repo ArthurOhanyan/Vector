@@ -140,22 +140,37 @@ class MyVector<bool>
 	size_t* v_ptr;
 	int v_size;
 	int v_capacity;
+	int SIZE = sizeof(size_t) * 8;
 
 	void reallocator (int x = 0){
 			
-		if (v_capacity == 0){
-			
-			v_capacity = 10;
+		int tmp_capacity = v_capacity;
 
-		} else if (x == 0){
-			
-			v_capacity *= 2;
+		if (x == 0){
+		
+			++v_capacity;
+
 		} else {
+		
+			if (x % SIZE != 0){
+				
+				if (x / SIZE == 0){
+				
+					++v_capacity;
+
+				} else {
+					
+					v_capacity += (x / SIZE) + 1;
+				}
+
+			} else {
 			
-			v_capacity = x + 5;
+				v_capacity += (x / SIZE);
+			}
 		}
-		size_t tmp = new T [v_capacity];
-		for (int i = 0; i < v_size; ++i){
+
+		size_t* tmp = new size_t [v_capacity];
+		for (int i = 0; i < tmp_capacity; ++i){
 			
 			tmp [i] = v_ptr[i];
 		}	
@@ -163,10 +178,24 @@ class MyVector<bool>
 		v_ptr = tmp;
 		tmp = nullptr;
 	}
+	
+	public:
+	void push_back(const bool);
 
 	MyVector<bool>();
 	
 	~MyVector<bool>();
+	
+	  std::ostream& operator << (std::ostream& os)
+	{
+		for (int i = 0; i < v_capacity; ++i){
+			
+			os << v_ptr[i] << " ";
+		}
+
+		return os;
+	
+	}
 
 
 };
@@ -209,7 +238,7 @@ MyVector<T>::MyVector()
 template <typename T>
 MyVector<T>::MyVector(int x, int y)
 {
-	v_capacity = 10;
+	v_capacity = x;
 	v_size = 0;
 	v_ptr = new T [v_capacity];
 	for (int i = 0; i < x; ++i){
@@ -243,6 +272,20 @@ int main ()
 	MyVector<int> my_vec;
 	MyVector<int> my_vec2;
 	MyVector<int> my_vec3(3,17);
+
+	MyVector<bool> my_vec_bool;
+	//my_vec_bool.push_back(false);
+	//my_vec_bool.push_back(false);
+	//my_vec_bool.push_back(true);
+	//my_vec_bool.push_back(true);
+	for (int i = 0; i < 67; ++i){
+		
+		my_vec_bool.push_back(true);
+		std::cout << " " << my_vec_bool;
+
+	}
+	std::cout << std::endl;
+	std::cout << my_vec_bool << std::endl;
 	std::cout << " my_vec3 size " << my_vec3.size() << " capacity = " << my_vec.capacity() << " :: " << my_vec3 << std::endl;
 	std::cout << " the size is : " << my_vec.size() << std::endl;
 	//std::cout << " the max size is : " << my_vec.max_size() << std::endl;
@@ -315,6 +358,59 @@ int main ()
 
 }
 
+
+///////////////////////////////////////////////////
+///////	       	VECTOR BOOL 		 //////////
+
+void MyVector<bool>::push_back(const bool bl)
+{
+	if (!v_ptr){
+		
+		std::cout << " called MyVector<bool> push_back() function :: nullptr :: error " << std::endl;
+		//exit(0);
+	}
+
+	if (v_capacity == 0 || v_size == (sizeof(size_t) * 8) * v_capacity){
+		
+		MyVector<bool>::reallocator();
+		std::cout << " push_back :: reallocator :: v_capacity :: " << v_capacity << std::endl;
+	}
+	
+	if (bl) {
+
+		if (v_size < sizeof (size_t) * 8){
+		
+			v_ptr[0] ^= (1 << v_size);
+			std::cout << " v_size = " << v_size << " v_capacity = " << v_capacity  << std::endl;
+			++v_size;
+
+		} else {
+			
+			std::cout << " ???  capacity = " << v_capacity << " v_size = " << v_size << std::endl; 
+			int tmp_elem = v_size / sizeof (size_t) * 8;
+
+			int tmp_index = v_size % sizeof (size_t) * 8;
+
+			v_ptr[tmp_elem] ^= (1 << tmp_index);
+			++v_size;
+
+		}
+	} else {
+	
+		++v_size;
+	}	
+
+}
+
+std::ostream& operator << (std::ostream& os, MyVector<bool>& vec){
+
+	return vec.operator<<(os);
+
+}
+///////////////////////////////////////////////////
+///////					 //////////
+///////	       	VECTOR BOOL 		 //////////
+//////////////////////////////////////////////////
 
 template <typename T>
 int MyVector<T>::size()
