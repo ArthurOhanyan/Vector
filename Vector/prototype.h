@@ -31,6 +31,93 @@ class MyVector
 	}
 
 	public:
+
+	////// Iterator class //////
+	
+	class Iterator
+	{
+		public:
+
+		explicit Iterator (T* ptr1) : ptr (ptr1){};
+
+		T& operator* (){
+		
+			return *ptr;
+		}	
+
+		T* operator -> () {
+			
+			return ptr;
+		}
+
+		Iterator& operator = (const Iterator& obj){
+			
+			this -> ptr = obj.ptr;
+			return *this;
+		}
+
+		T& operator [] (size_t i){
+			
+			T& a = *(ptr + i);
+
+			return a;
+		} 
+
+		bool operator < (cost Iterator& otr)
+		{
+			return (this < otr.ptr);
+		}
+
+		bool operator > (const Iterator& otr){
+		
+			return (this > otr.ptr);
+		}
+
+		Iterator operator ++ () {
+		
+			++ptr;
+			return *this;
+		}
+
+		Iterator operator ++ (int){
+		
+			Iterator tmp = *this;
+			++ptr;
+			return tmp;
+		}
+
+		bool operator == (const Iterator& otr){
+			
+			return this -> ptr == otr.ptr;
+		}
+
+		bool operator != (const Iterator& otr){
+			
+			return !(this -> ptr == otr.ptr);
+		}
+
+		Iterator (const Iterator& otr) : ptr (otr.ptr){};
+		
+		private: 
+		T* ptr;
+	
+			
+	};
+
+	using itr = Iterator;
+	itr begin(){
+		
+		return itr (this -> data());
+	}
+
+	itr end() {
+		
+		return itr (this -> data() + v_size);
+	}
+
+
+	
+	///// Iterator class //////
 	MyVector ();
 	MyVector (int,int);
 	MyVector (std::initializer_list<int>);
