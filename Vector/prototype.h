@@ -63,7 +63,7 @@ class MyVector
 			return a;
 		} 
 
-		bool operator < (cost Iterator& otr)
+		bool operator < (const Iterator& otr)
 		{
 			return (this < otr.ptr);
 		}
@@ -71,6 +71,16 @@ class MyVector
 		bool operator > (const Iterator& otr){
 		
 			return (this > otr.ptr);
+		}
+
+		bool operator <= (const Iterator& otr){
+			
+			return (this <= otr.ptr);
+		}
+
+		bool operator >= (const Iterator& otr){
+		
+			return (this >= otr.ptr);
 		}
 
 		Iterator operator ++ () {
@@ -220,7 +230,10 @@ class MyVector
 	  	
 	  }
 
-	 
+	bool operator == (const MyVector& otr){
+	
+		return this -> v_ptr == otr.v_ptr;
+	}	 
 };
 
 template <>
